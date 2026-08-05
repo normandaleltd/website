@@ -221,7 +221,8 @@
         return;
       }
 
-      var images = {{ page.hero_rotator.images | jsonify }};
+      {% assign _rotator_images = "" | split: "" %}{% for _img in page.hero_rotator.images %}{% assign _rotator_images = _rotator_images | push: _img %}{% endfor %}
+      var images = [{% for _img in _rotator_images %}"{{ _img | relative_url }}"{% unless forloop.last %},{% endunless %}{% endfor %}];
 
       if (!images || images.length < 2) {
         return;

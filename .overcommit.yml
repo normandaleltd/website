@@ -7,3 +7,7 @@ PreCommit:
     description: "Lint Markdown files"
     include:
       - "**/*.md"
+  BundleInstall:
+    enabled: true
+    required: false
+    execute: bundle install

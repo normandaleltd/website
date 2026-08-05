@@ -1,0 +1,304 @@
+<style>
+  :root {
+    --brand-green: #327A34;
+    --brand-green-dark: #28622A;
+  }
+
+  /* Brand color overrides for actions and interactive accents */
+  .btn--primary {
+    background-color: var(--brand-green);
+    border-color: var(--brand-green);
+  }
+
+  .btn--primary:hover,
+  .btn--primary:focus,
+  .btn--primary:active {
+    background-color: var(--brand-green-dark);
+    border-color: var(--brand-green-dark);
+  }
+
+  .greedy-nav .visible-links a:before {
+    background: var(--brand-green);
+  }
+
+  .greedy-nav__toggle:hover .navicon,
+  .greedy-nav__toggle:hover .navicon:before,
+  .greedy-nav__toggle:hover .navicon:after {
+    background: var(--brand-green-dark);
+  }
+
+  a:hover,
+  a:focus {
+    color: var(--brand-green);
+  }
+
+  /* Home splash hero: increase visible image area */
+  .layout--splash .page__hero--overlay {
+    min-height: 52vh;
+    padding: 7rem 0;
+    background-position: center 45%;
+  }
+
+  .layout--splash .page__hero--overlay.hero-rotator-enabled {
+    position: relative;
+    background-image: none !important;
+    overflow: hidden;
+  }
+
+  .layout--splash .page__hero--overlay.hero-rotator-enabled > .wrapper {
+    position: relative;
+    z-index: 3;
+  }
+
+  .hero-rotator__layer {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center 45%;
+    opacity: 0;
+    transition: opacity 1200ms ease-in-out;
+    will-change: opacity;
+    pointer-events: none;
+  }
+
+  .hero-rotator__layer.is-visible {
+    opacity: 1;
+  }
+
+  /* Home feature cards: keep a consistent crop regardless of source image size */
+  .layout--splash .feature__item .archive__item-teaser img,
+  .layout--splash .feature__item .archive__item img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  /* Content page lead images: enforce a clean panoramic crop */
+  .page__content > p:first-child > img {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    margin-bottom: 1.25rem;
+  }
+
+  .map-embed {
+    margin: 1rem 0 1.25rem;
+    border: 1px solid #d6d6d6;
+    border-radius: 0.35rem;
+    overflow: hidden;
+  }
+
+  .map-embed iframe {
+    display: block;
+    width: 100%;
+    min-height: 420px;
+  }
+
+  /* Fine-tune focal points for specific images */
+  .page__content img[src*="sector-aerospace.jpg"] {
+    object-position: center 35%;
+  }
+
+  .page__content img[src*="sector-marine.jpg"] {
+    object-position: center 40%;
+  }
+
+  .page__content img[src*="sector-industrial.jpg"] {
+    object-position: center 42%;
+  }
+
+  /* Masthead dropdown menus */
+  .masthead__menu-item--has-children {
+    position: relative;
+  }
+
+  .masthead__menu-item--has-children::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    height: 0.5rem;
+  }
+
+  .masthead__submenu {
+    list-style: none;
+    margin: 0;
+    padding: 0.4rem 0;
+    min-width: 13rem;
+    background: #252a34;
+    border: 1px solid #51555d;
+    border-radius: 0.25rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 2000;
+  }
+
+  .masthead__submenu-item a {
+    margin: 0;
+    padding: 0.45rem 0.9rem;
+    white-space: nowrap;
+  }
+
+  .masthead__menu-item--has-children:hover > .masthead__submenu,
+  .masthead__menu-item--has-children:focus-within > .masthead__submenu {
+    display: block;
+  }
+
+  .masthead__submenu-item a:before {
+    display: none;
+  }
+
+  @media (min-width: 64em) {
+    .greedy-nav .visible-links {
+      overflow: visible;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .layout--splash .page__hero--overlay {
+      min-height: 62vh;
+      padding: 4.5rem 0;
+      background-position: center 52%;
+    }
+
+    .hero-rotator__layer {
+      background-position: center 52%;
+    }
+
+    .layout--splash .feature__item .archive__item-teaser img,
+    .layout--splash .feature__item .archive__item img {
+      aspect-ratio: 4 / 3;
+    }
+
+    .page__content > p:first-child > img {
+      aspect-ratio: 4 / 3;
+      margin-bottom: 1rem;
+    }
+
+    .map-embed iframe {
+      min-height: 340px;
+    }
+
+    .greedy-nav .hidden-links .masthead__submenu {
+      display: block;
+      position: static;
+      min-width: auto;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      background: transparent;
+      padding: 0 0 0.6rem 0.8rem;
+    }
+
+    .greedy-nav .hidden-links .masthead__submenu-item a {
+      padding: 0.3rem 0.6rem;
+      font-size: 0.95em;
+      opacity: 0.9;
+    }
+  }
+</style>
+
+{% if page.url == "/" and page.hero_rotator and page.hero_rotator.enabled != false and page.hero_rotator.images %}
+<script>
+  (function () {
+    function initHeroRotator() {
+      var hero = document.querySelector('.layout--splash .page__hero--overlay');
+      if (!hero) {
+        return;
+      }
+
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+      }
+
+      var images = {{ page.hero_rotator.images | jsonify }};
+
+      if (!images || images.length < 2) {
+        return;
+      }
+
+      function themedBackground(url) {
+        return "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('" + url + "')";
+      }
+
+      images.forEach(function (src) {
+        var img = new Image();
+        img.src = src;
+      });
+
+      var layerA = document.createElement('div');
+      layerA.className = 'hero-rotator__layer is-visible';
+      layerA.setAttribute('aria-hidden', 'true');
+
+      var layerB = document.createElement('div');
+      layerB.className = 'hero-rotator__layer';
+      layerB.setAttribute('aria-hidden', 'true');
+
+      layerA.style.backgroundImage = themedBackground(images[0]);
+
+      hero.classList.add('hero-rotator-enabled');
+      hero.insertBefore(layerA, hero.firstChild);
+      hero.insertBefore(layerB, hero.firstChild);
+
+      var currentIndex = 0;
+      var showingLayerA = true;
+      var intervalMs = {{ page.hero_rotator.interval_ms | default: 5500 | jsonify }};
+      var timerId = null;
+
+      function tick() {
+        var nextIndex = (currentIndex + 1) % images.length;
+        var incoming = showingLayerA ? layerB : layerA;
+        var outgoing = showingLayerA ? layerA : layerB;
+
+        incoming.style.backgroundImage = themedBackground(images[nextIndex]);
+        incoming.classList.add('is-visible');
+        outgoing.classList.remove('is-visible');
+
+        currentIndex = nextIndex;
+        showingLayerA = !showingLayerA;
+      }
+
+      function startRotation() {
+        if (timerId !== null) {
+          return;
+        }
+        timerId = window.setInterval(tick, intervalMs);
+      }
+
+      function stopRotation() {
+        if (timerId === null) {
+          return;
+        }
+        window.clearInterval(timerId);
+        timerId = null;
+      }
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          stopRotation();
+        } else {
+          startRotation();
+        }
+      });
+
+      startRotation();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHeroRotator);
+    } else {
+      initHeroRotator();
+    }
+  })();
+</script>
+{% endif %}

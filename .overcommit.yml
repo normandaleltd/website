@@ -1,0 +1,9 @@
+---
+gemfile: Gemfile
+
+PreCommit:
+  MdLint:
+    enabled: true
+    description: "Lint Markdown files"
+    include:
+      - "**/*.md"

@@ -3,6 +3,13 @@ name: Deploy Jekyll site to Pages
 on:
   push:
     branches: ["main"]
+    paths:
+      - _data/**
+      - _includes/**
+      - _pages/**
+      - assets/**
+      - _config.yml
+      - Gemfile
   workflow_dispatch:
 
 permissions:
